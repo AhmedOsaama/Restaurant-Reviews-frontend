@@ -110,6 +110,13 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: const Text("Login"),
                             ),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: RaisedButton(
+                              onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx) => HomeScreen())),
+                              child: const Text("Back to home"),
+                            ),
+                    ),
                   ],
                 ),
               ),

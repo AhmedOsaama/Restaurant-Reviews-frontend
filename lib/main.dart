@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:restaurant_reviews/firebase_options.dart';
+import 'package:restaurant_reviews/screens/home_screen.dart';
 import 'package:restaurant_reviews/screens/login_screen.dart';
 
 void main() async {
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.brown,
         accentColor: Colors.brown[300]
       ),
-      home: LoginScreen(),
+      home: HomeScreen(),
     );
   }
 }
