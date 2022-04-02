@@ -79,6 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         )),
                   );
                 }),
+            if(widget.username != null)
             ElevatedButton(
               onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                   builder: (ctx) => AddRestaurantScreen(widget.username))),

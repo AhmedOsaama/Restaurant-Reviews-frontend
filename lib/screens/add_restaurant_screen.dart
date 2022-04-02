@@ -28,6 +28,7 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
   bool _isLoading = false;
 
   Future<void> _addRestaurant() async {
+  print(widget.username);
     final url = Uri.parse("http://10.0.2.2:5000/restaurant/add");
     final response = await http.post(url,body: jsonEncode({
       'username': widget.username,
@@ -140,7 +141,8 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
                   decoration:
                   const InputDecoration(labelText: "Description"),
                   textInputAction: TextInputAction.newline,
-                  minLines: 2,
+                  keyboardType: TextInputType.multiline,
+                  minLines: 3,
                   maxLines: 10,
                   // onChanged: (value){
                   //   restaurantName = value;
