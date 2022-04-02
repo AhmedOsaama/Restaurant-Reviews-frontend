@@ -24,17 +24,22 @@ class _HomeScreenState extends State<HomeScreen> {
     // print(decodedResponse);
     for(var restaurant in decodedResponse.values){
       restaurantList.add({
+        'docId': restaurant['docId'],
         'postcode':restaurant['postcode'],
         'name':restaurant['name'],
         'photoUrl':restaurant['photoUrl'],
         'description': restaurant['description'],
         'dateTime': restaurant['dateTime'],
         'foodType': restaurant['foodType'],
+        'reviews': restaurant['reviews'],
       });
     }
-    print(restaurantList.length);
+    // print(restaurantList.length);
   }
-
+  var totalFoodScore = 0;
+  var totalServiceScore = 0;
+  var totalValueScore = 0;
+  var totalRestaurantsReviewScore = 0;
   @override
   void didChangeDependencies() {
      restaurantsFuture = getAllRestaurants();
@@ -69,12 +74,15 @@ class _HomeScreenState extends State<HomeScreen> {
                         itemBuilder: (ctx, i) => restaurantList.isEmpty ? const Text('no restaurants yet') : Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: RestaurantWidget(
-                                postcode: restaurantList[i]['postcode'],
+                            username: widget.username,
+                            docId: restaurantList[i]['docId'],
+                            postcode: restaurantList[i]['postcode'],
                                 name: restaurantList[i]['name'],
                                 imageSrc: restaurantList[i]['photoUrl'],
                             description: restaurantList[i]['description'],
                             date: restaurantList[i]['dateTime'],
                             foodType: restaurantList[i]['foodType'],
+                            reviews: restaurantList[i]['reviews'],
                               ),
                         )),
                   );
