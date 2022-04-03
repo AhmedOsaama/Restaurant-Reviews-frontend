@@ -28,7 +28,8 @@ class _LoginScreenState extends State<LoginScreen> {
       // print(username);
       // print(password);
       try {
-        var url = Uri.parse("http://10.0.2.2:5000/user/login");
+        // var url = Uri.parse("http://10.0.2.2:5000/user/login");
+        var url = Uri.parse("https://all-restaurant-reviews.herokuapp.com/user/login");
         final response = await http.post(
           url,
           headers: {'Content-Type': 'application/json'},

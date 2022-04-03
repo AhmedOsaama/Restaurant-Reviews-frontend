@@ -43,7 +43,8 @@ class Restaurants with ChangeNotifier {
       required String photoUrl}) async {
     // print(username);
     // final newRestaurant = Restaurant(docId: docId, name: name, postcode: postcode, photoUrl: photoUrl, foodType: foodType, dateTime: dateTime, description: description, reviews: reviews)
-    final url = Uri.parse("http://10.0.2.2:5000/restaurant/add");
+    // final url = Uri.parse("http://10.0.2.2:5000/restaurant/add");
+    final url = Uri.parse("https://all-restaurant-reviews.herokuapp.com/restaurant/add");
     final response = await http.post(
       url,
       body: jsonEncode({
@@ -65,26 +66,31 @@ class Restaurants with ChangeNotifier {
   }
 
   Future<dynamic> getAllRestaurants() async {
-    var url = Uri.parse("http://10.0.2.2:5000/restaurant/all");
-    final response = await http.get(url);
-    final Map<String, dynamic> decodedResponse = jsonDecode(response.body);
-    // print(decodedResponse);
-    if(_restaurants.isNotEmpty){
-      _restaurants.clear();
-    }
-    for (var restaurant in decodedResponse.values) {
-      _restaurants.add(Restaurant(
-        docId: restaurant['docId'],
-        postcode: restaurant['postcode'],
-        name: restaurant['name'],
-        photoUrl: restaurant['photoUrl'],
-        description: restaurant['description'],
-        dateTime: DateTime.parse(restaurant['dateTime']),
-        foodType: restaurant['foodType'],
-        reviews: restaurant['reviews'],
-      ));
+    try {
+      // var url = Uri.parse("http://10.0.2.2:5000/restaurant/all");
+      var url = Uri.parse("https://all-restaurant-reviews.herokuapp.com/restaurant/all");
+      final response = await http.get(url);
+      final Map<String, dynamic> decodedResponse = jsonDecode(response.body);
+      // print(decodedResponse);
+      if (_restaurants.isNotEmpty) {
+        _restaurants.clear();
+      }
+      for (var restaurant in decodedResponse.values) {
+        _restaurants.add(Restaurant(
+          docId: restaurant['docId'],
+          postcode: restaurant['postcode'],
+          name: restaurant['name'],
+          photoUrl: restaurant['photoUrl'],
+          description: restaurant['description'],
+          dateTime: DateTime.parse(restaurant['dateTime']),
+          foodType: restaurant['foodType'],
+          reviews: restaurant['reviews'],
+        ));
+      }
+    }catch(error){
+      print(error);
     }
     notifyListeners();
-    print(_restaurants.length);
+    // print(_restaurants.length);
   }
 }

@@ -59,7 +59,7 @@ class RestaurantDetailScreen extends StatelessWidget {
     // print(hasReviewed);
     return Scaffold(
       appBar: AppBar(
-        title: Text(name),
+        title: Text(name,style: TextStyle(fontWeight: FontWeight.bold),),
       ),
       body: SizedBox(
         width: double.infinity,
@@ -70,7 +70,7 @@ class RestaurantDetailScreen extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              Text(name),
+              Text(name,style: TextStyle(fontWeight: FontWeight.bold),),
               const SizedBox(
                 height: 10,
               ),
@@ -83,7 +83,7 @@ class RestaurantDetailScreen extends StatelessWidget {
                 height: 10,
               ),
               Text(
-                  "Created: ${DateFormat().add_yMMMd().format(date)}"),
+                  "Added on: ${DateFormat().add_yMMMd().format(date)}"),
               const SizedBox(
                 height: 10,
               ),
@@ -106,6 +106,8 @@ class RestaurantDetailScreen extends StatelessWidget {
                     onPressed: () =>
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (ctx) => ReviewScreen(
+                              name: name,
+                                  postcode: postcode,
                                   username: username,
                                   docId: docId,
                                 ))),

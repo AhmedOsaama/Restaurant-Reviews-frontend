@@ -17,9 +17,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  bool loaded = false;
   @override
   void initState() {
-    Provider.of<Restaurants>(context,listen: false).getAllRestaurants();
+    Provider.of<Restaurants>(context, listen: false)
+        .getAllRestaurants().then((value) => loaded = true);
     super.initState();
   }
 
@@ -33,6 +35,8 @@ class _HomeScreenState extends State<HomeScreen> {
     final restaurantProvider = Provider.of<Restaurants>(context);
     // restaurantProvider.getAllRestaurants();
     final restaurantList = restaurantProvider.restaurants;
+    // print(restaurantList.length);
+    // print(loaded);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Restaurants'),
@@ -47,38 +51,40 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // FutureBuilder(
-            //     future: restaurantsFuture,
-            //     builder: (ctx, snapshot) {
-            //       if (snapshot.connectionState == ConnectionState.waiting) {
-            //         return Center(child: CircularProgressIndicator());
-            //       }
-            //       return
-                    Expanded(
+            //TODO: Add a message if no data is present in homepage.
+            restaurantList.isNotEmpty && loaded
+                ? Expanded(
                     child: ListView.builder(
                         itemCount: restaurantList.length,
-                        itemBuilder: (ctx, i) => restaurantList.isEmpty ? const Text('no restaurants yet') : Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: RestaurantWidget(
-                            username: widget.username,
-                            docId: restaurantList[i].docId,
-                            postcode: restaurantList[i].postcode,
-                                name: restaurantList[i].name,
-                                imageSrc: restaurantList[i].photoUrl,
-                            description: restaurantList[i].description,
-                            date: restaurantList[i].dateTime,
-                            foodType: restaurantList[i].foodType,
-                            reviews: restaurantList[i].reviews,
-                              ),
-                        )),
-                  ),
-                // }),
-            if(widget.username != null)
-            ElevatedButton(
-              onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (ctx) => AddRestaurantScreen(widget.username))),
-              child: Text("Add restaurant"),
-            ),
+                        itemBuilder: (ctx, i) => restaurantList.isEmpty
+                            ? const Text('no restaurants yet')
+                            : Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: RestaurantWidget(
+                                  username: widget.username,
+                                  docId: restaurantList[i].docId,
+                                  postcode: restaurantList[i].postcode,
+                                  name: restaurantList[i].name,
+                                  imageSrc: restaurantList[i].photoUrl,
+                                  description: restaurantList[i].description,
+                                  date: restaurantList[i].dateTime,
+                                  foodType: restaurantList[i].foodType,
+                                  reviews: restaurantList[i].reviews,
+                                ),
+                              )),
+                  )
+                : loaded ? const Center(child: Text("No restaurants yet!")) : const CircularProgressIndicator(),
+            // }),
+            if (widget.username != null)
+              RaisedButton(
+                color: Colors.lightBlue[300],
+                textColor: Colors.white,
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (ctx) => AddRestaurantScreen(widget.username))),
+                child: Text(
+                  "Add restaurant",
+                ),
+              ),
           ],
         ),
       ),

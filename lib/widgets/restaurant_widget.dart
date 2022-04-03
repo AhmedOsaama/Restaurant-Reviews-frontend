@@ -46,7 +46,7 @@ class RestaurantWidget extends StatelessWidget {
         const SizedBox(
           height: 10,
         ),
-        Text(name),
+        Text(name,style: TextStyle(fontWeight: FontWeight.bold),),
         const SizedBox(
           height: 10,
         ),

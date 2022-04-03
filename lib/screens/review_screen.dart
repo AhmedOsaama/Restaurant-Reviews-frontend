@@ -8,8 +8,10 @@ import 'package:restaurant_reviews/providers/restaurant.dart';
 class ReviewScreen extends StatefulWidget {
   final docId;
   final username;
+  final postcode;
+  final name;
 
-  const ReviewScreen({Key? key, this.docId, this.username}) : super(key: key);
+  const ReviewScreen({Key? key, this.docId, this.username, this.postcode, this.name}) : super(key: key);
   @override
   _ReviewScreenState createState() => _ReviewScreenState();
 }
@@ -38,7 +40,8 @@ class _ReviewScreenState extends State<ReviewScreen> {
     setState(() {
       isLoading = true;
     });
-    final url = Uri.parse('http://10.0.2.2:5000/restaurant/addreview');
+    final url = Uri.parse('https://all-restaurant-reviews.herokuapp.com/restaurant/addreview');
+    // final url = Uri.parse('http://10.0.2.2:5000/restaurant/addreview');
     final response = await http.post(url,
         body: jsonEncode({
           'username': widget.username,
@@ -69,6 +72,8 @@ class _ReviewScreenState extends State<ReviewScreen> {
           padding: const EdgeInsets.all(10),
           child: Column(
             children: [
+              Text(widget.name,style: TextStyle(fontWeight: FontWeight.bold),),
+              Text(widget.postcode,style: TextStyle(fontWeight: FontWeight.bold),),
               TextField(
                 decoration: const InputDecoration(labelText: 'Comment'),
                 controller: commentController,

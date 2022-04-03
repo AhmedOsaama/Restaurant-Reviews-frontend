@@ -41,14 +41,24 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
       final savedImage = await _images![0].save();
       photoUrl = savedImage!.originalUrl;
     }
-    await Provider.of<Restaurants>(context,listen: false).addRestaurant(
-        postcode: postcode,
-        restaurantName: restaurantName,
-        dateTime: dateTime,
-        photoUrl: photoUrl,
-        description: description,
-        foodType: foodType,
-        username: widget.username);
+    await Provider.of<Restaurants>(context, listen: false)
+        .addRestaurant(
+            postcode: postcode,
+            restaurantName: restaurantName,
+            dateTime: dateTime,
+            photoUrl: photoUrl,
+            description: description,
+            foodType: foodType,
+            username: widget.username)
+        .catchError((error) {
+          setState(() {
+            _isLoading = false;
+          });
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: const Text('Restaurant already exists'),
+        backgroundColor: Theme.of(context).errorColor,
+      ));
+    });
     setState(() {
       _isLoading = false;
     });
@@ -57,6 +67,7 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
 
   @override
   Widget build(BuildContext context) {
+    //TODO: add a meaningful message upon adding a duplicate restaurant
     return Scaffold(
       appBar: AppBar(
         title: const Text("Add Restaurant"),
