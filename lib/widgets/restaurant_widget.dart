@@ -52,7 +52,13 @@ class RestaurantWidget extends StatelessWidget {
         ),
         Text(postcode),
         if(reviews != null) SizedBox(height: 10,),
-        if(reviews != null) Text("${averageScore.toStringAsFixed(1)}"),
+        if(reviews != null) Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text("Users rating:  ${averageScore.toStringAsFixed(1)}",textAlign: TextAlign.center,),
+            Icon(Icons.star,color: Colors.yellow,),
+          ],
+        ),
         ElevatedButton(
             onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                 builder: (ctx) => RestaurantDetailScreen(

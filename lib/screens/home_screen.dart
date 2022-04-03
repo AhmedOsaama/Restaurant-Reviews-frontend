@@ -51,10 +51,12 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            //TODO: Add a message if no data is present in homepage.
             restaurantList.isNotEmpty && loaded
                 ? Expanded(
-                    child: ListView.builder(
+                    child: ListView.separated(
+                      separatorBuilder: (context, index){
+                        return const Divider(thickness: 2.0,);
+                      },
                         itemCount: restaurantList.length,
                         itemBuilder: (ctx, i) => restaurantList.isEmpty
                             ? const Text('no restaurants yet')

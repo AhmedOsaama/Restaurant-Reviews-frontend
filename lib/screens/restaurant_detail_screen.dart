@@ -97,9 +97,9 @@ class RestaurantDetailScreen extends StatelessWidget {
                   },
                 ),
               ),
-              if (reviews != null) Text("food: $averageFoodScore"),
-              if (reviews != null) Text("service: $averageServiceScore"),
-              if (reviews != null) Text("value: $averageValueScore"),
+              if (reviews != null) Text("Food rating:  $averageFoodScore",style: TextStyle(fontStyle: FontStyle.italic),),
+              if (reviews != null) Text("Service rating:  $averageServiceScore",style: TextStyle(fontStyle: FontStyle.italic)),
+              if (reviews != null) Text("Value rating:  $averageValueScore",style: TextStyle(fontStyle: FontStyle.italic)),
               SizedBox(height: 10,),
               if (username != null && !hasReviewed)
                 ElevatedButton(
