@@ -45,7 +45,7 @@ class RestaurantDetailScreen extends StatelessWidget {
       //reviews.values: list of all reviews for a restaurant.
       for (var review in reviews.values) {
         if (username == review['username']) {
-          print('${username} ${review['username']}');
+          // print('${username} ${review['username']}');
           hasReviewed = true;
         }
         totalFoodScore += review['foodScore'] as int;
@@ -56,7 +56,7 @@ class RestaurantDetailScreen extends StatelessWidget {
       averageServiceScore = totalServiceScore / reviews.values.length;
       averageValueScore = totalValueScore / reviews.values.length;
     }
-    print(hasReviewed);
+    // print(hasReviewed);
     return Scaffold(
       appBar: AppBar(
         title: Text(name),
@@ -83,7 +83,7 @@ class RestaurantDetailScreen extends StatelessWidget {
                 height: 10,
               ),
               Text(
-                  "Created: ${DateFormat().add_yMMMd().format(DateTime.parse(date))}"),
+                  "Created: ${DateFormat().add_yMMMd().format(date)}"),
               const SizedBox(
                 height: 10,
               ),
@@ -104,7 +104,7 @@ class RestaurantDetailScreen extends StatelessWidget {
               if (username != null && !hasReviewed)
                 ElevatedButton(
                     onPressed: () =>
-                        Navigator.of(context).push(MaterialPageRoute(
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (ctx) => ReviewScreen(
                                   username: username,
                                   docId: docId,

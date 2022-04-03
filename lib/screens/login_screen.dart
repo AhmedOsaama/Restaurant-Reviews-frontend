@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:restaurant_reviews/providers/restaurant.dart';
 import 'package:restaurant_reviews/screens/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -23,8 +25,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (isValid) {
       _formKey.currentState!.save();
-      print(username);
-      print(password);
+      // print(username);
+      // print(password);
       try {
         var url = Uri.parse("http://10.0.2.2:5000/user/login");
         final response = await http.post(
@@ -32,8 +34,8 @@ class _LoginScreenState extends State<LoginScreen> {
           headers: {'Content-Type': 'application/json'},
           body: json.encode({'username': username, 'pass': password}),
         );
-        print('Response status: ${response.statusCode}');
-        print('Response body: ${response.body}');
+        // print('Response status: ${response.statusCode}');
+        // print('Response body: ${response.body}');
         if (response.statusCode == 200) {
           Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx) => HomeScreen(username: username,)));
         } else {

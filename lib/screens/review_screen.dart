@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:provider/provider.dart';
+import 'package:restaurant_reviews/providers/restaurant.dart';
+
 class ReviewScreen extends StatefulWidget {
   final docId;
   final username;
@@ -19,8 +22,8 @@ class _ReviewScreenState extends State<ReviewScreen> {
   bool isLoading = false;
 
   void submitReview() async {
-    print('entered');
-    print(widget.docId);
+    // print('entered');
+    // print(widget.docId);
     if (commentController.value.text.isEmpty ||
         _foodScore == 0 ||
         _valueScore == 0 ||
@@ -48,8 +51,9 @@ class _ReviewScreenState extends State<ReviewScreen> {
     setState(() {
       isLoading = false;
     });
-    print(response.body);
+    // print(response.body);
     if (response.statusCode == 200) {
+      Provider.of<Restaurants>(context,listen: false).getAllRestaurants();
       Navigator.of(context).pop();
     }
   }

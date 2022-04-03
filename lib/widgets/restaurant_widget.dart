@@ -35,10 +35,10 @@ class RestaurantWidget extends StatelessWidget {
         totalServiceScore += review['serviceScore'] as int;
         totalValueScore += review['valueScore'] as int;
       }
-      print(totalValueScore);
-      print(totalFoodScore);
-      print(totalServiceScore);
-    averageScore = (totalServiceScore + totalFoodScore + totalValueScore) / reviews.values.length;
+      // print(totalValueScore);
+      // print(totalFoodScore);
+      // print(totalServiceScore);
+    averageScore = ((totalServiceScore + totalFoodScore + totalValueScore) / reviews.values.length) / 3;
     }
     return Column(
       children: [
@@ -52,7 +52,7 @@ class RestaurantWidget extends StatelessWidget {
         ),
         Text(postcode),
         if(reviews != null) SizedBox(height: 10,),
-        if(reviews != null) Text("$averageScore"),
+        if(reviews != null) Text("${averageScore.toStringAsFixed(1)}"),
         ElevatedButton(
             onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                 builder: (ctx) => RestaurantDetailScreen(

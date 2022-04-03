@@ -4,6 +4,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:image_form_field/image_form_field.dart';
+import 'package:provider/provider.dart';
+import 'package:restaurant_reviews/providers/restaurant.dart';
 import 'package:restaurant_reviews/widgets/image_input_adapter.dart';
 import 'package:restaurant_reviews/widgets/upload_button.dart';
 import 'package:http/http.dart' as http;
@@ -27,24 +29,6 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
 
   bool _isLoading = false;
 
-  Future<void> _addRestaurant() async {
-  print(widget.username);
-    final url = Uri.parse("http://10.0.2.2:5000/restaurant/add");
-    final response = await http.post(url,body: jsonEncode({
-      'username': widget.username,
-      'name': restaurantName,
-      'postcode': postcode,
-      'foodType': foodType,
-      'description': description,
-      'dateTime': dateTime.toIso8601String(),
-      'photoUrl': photoUrl
-    }),
-    );
-   final decodedResponse = jsonDecode(response.body);
-   print(decodedResponse);
-  }
-
-
   void _submitForm() async {
     FocusScope.of(context).unfocus();
     final isValid = _formKey.currentState!.validate();
@@ -53,11 +37,18 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
     setState(() {
       _isLoading = true;
     });
-    if(_images![0].isFile == true){
+    if (_images![0].isFile == true) {
       final savedImage = await _images![0].save();
       photoUrl = savedImage!.originalUrl;
     }
-    await _addRestaurant();
+    await Provider.of<Restaurants>(context,listen: false).addRestaurant(
+        postcode: postcode,
+        restaurantName: restaurantName,
+        dateTime: dateTime,
+        photoUrl: photoUrl,
+        description: description,
+        foodType: foodType,
+        username: widget.username);
     setState(() {
       _isLoading = false;
     });
@@ -67,7 +58,9 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Add restaurant"),),
+      appBar: AppBar(
+        title: const Text("Add restaurant"),
+      ),
       body: Padding(
         padding: EdgeInsets.all(15),
         child: Form(
@@ -77,9 +70,9 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
               children: [
                 TextFormField(
                   decoration:
-                  const InputDecoration(labelText: "Restaurant Name"),
+                      const InputDecoration(labelText: "Restaurant Name"),
                   textInputAction: TextInputAction.next,
-                  onChanged: (value){
+                  onChanged: (value) {
                     restaurantName = value;
                     dateTime = DateTime.now();
                   },
@@ -96,9 +89,9 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
                 ),
                 const SizedBox(
                   height: 10,
-                ),TextFormField(
-                  decoration:
-                  const InputDecoration(labelText: "Postcode"),
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(labelText: "Postcode"),
                   textInputAction: TextInputAction.next,
                   // onChanged: (value){
                   //   postcode = value;
@@ -116,9 +109,9 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
                 ),
                 const SizedBox(
                   height: 10,
-                ),TextFormField(
-                  decoration:
-                  const InputDecoration(labelText: "Food Type"),
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(labelText: "Food Type"),
                   textInputAction: TextInputAction.next,
                   // onChanged: (value){
                   //   restaurantName = value;
@@ -137,9 +130,9 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
                 ),
                 const SizedBox(
                   height: 10,
-                ),TextFormField(
-                  decoration:
-                  const InputDecoration(labelText: "Description"),
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(labelText: "Description"),
                   textInputAction: TextInputAction.newline,
                   keyboardType: TextInputType.multiline,
                   minLines: 3,
@@ -164,24 +157,23 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
                 ),
                 ImageFormField(
                   shouldAllowMultiple: false,
-                  previewImageBuilder: (_,image) => image.widgetize(),
+                  previewImageBuilder: (_, image) => image.widgetize(),
                   buttonBuilder: (ctx, count) => PhotoUploadButton(
                       count: count, shouldAllowMultiple: false),
-                  initializeFileAsImage: (file) =>
-                      ImageInputAdapter(
-                        file: UploadableImage(
-                          file,
-                          storagePath: 'restaurants/$restaurantName',
-                        ),
-                      ),
-                  onSaved: (value) => _images = value as List<ImageInputAdapter>,
+                  initializeFileAsImage: (file) => ImageInputAdapter(
+                    file: UploadableImage(
+                      file,
+                      storagePath: 'restaurants/$restaurantName',
+                    ),
+                  ),
+                  onSaved: (value) =>
+                      _images = value as List<ImageInputAdapter>,
                   autovalidateMode: AutovalidateMode.always,
-                  validator: (value){
+                  validator: (value) {
                     print(value);
-                    if(value!.isEmpty){
+                    if (value!.isEmpty) {
                       return 'Please provide an image';
-                    }
-                    else{
+                    } else {
                       return null;
                     }
                   },
@@ -189,8 +181,8 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
                 const SizedBox(
                   height: 10,
                 ),
-                if(_isLoading) CircularProgressIndicator(),
-                if(!_isLoading)
+                if (_isLoading) CircularProgressIndicator(),
+                if (!_isLoading)
                   RaisedButton(
                     onPressed: _submitForm,
                     child: const Text("Submit"),
@@ -200,7 +192,6 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
               ],
             ),
           ),
-
         ),
       ),
     );
