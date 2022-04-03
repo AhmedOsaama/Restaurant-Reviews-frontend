@@ -59,7 +59,7 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Add restaurant"),
+        title: const Text("Add Restaurant"),
       ),
       body: Padding(
         padding: EdgeInsets.all(15),
